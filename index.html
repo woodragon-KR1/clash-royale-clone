@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="Clash Royale Clone - Real-time strategy game" />
+    <title>Clash Royale Clone</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen">
+            <h1>Clash Royale Clone</h1>
+            <p>1v1 Battle Arena</p>
+            <button id="start-btn" class="btn-primary">Start Game</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" class="screen hidden">
+            <div id="canvas-container">
+                <canvas id="game-canvas"></canvas>
+            </div>
+
+            <!-- Game HUD -->
+            <div id="hud">
+                <div id="enemy-info">
+                    <div class="elixir-bar">
+                        <div id="enemy-elixir" class="elixir-fill"></div>
+                    </div>
+                </div>
+
+                <div id="player-info">
+                    <div class="elixir-bar">
+                        <div id="player-elixir" class="elixir-fill"></div>
+                        <span id="elixir-count">0/10</span>
+                    </div>
+
+                    <div id="card-deck">
+                        <div class="card" data-unit="knight" data-cost="3">
+                            <div class="card-cost">3</div>
+                            <div class="card-name">Knight</div>
+                        </div>
+                        <div class="card" data-unit="archer" data-cost="2">
+                            <div class="card-cost">2</div>
+                            <div class="card-name">Archer</div>
+                        </div>
+                        <div class="card" data-unit="giant" data-cost="5">
+                            <div class="card-cost">5</div>
+                            <div class="card-name">Giant</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- End Screen -->
+        <div id="end-screen" class="screen hidden">
+            <h1 id="result-text">Victory!</h1>
+            <button id="restart-btn" class="btn-primary">Play Again</button>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>

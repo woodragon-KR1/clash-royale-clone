@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap');
+
+:root {
+    --color-bg: #0a0e27;
+    --color-bg-light: #141b3a;
+    --color-primary: #7c3aed;
+    --color-primary-light: #a78bfa;
+    --color-secondary: #ec4899;
+    --color-success: #10b981;
+    --color-danger: #ef4444;
+    --color-warning: #f59e0b;
+    --color-text: #ffffff;
+    --color-text-muted: #9ca3af;
+    --color-arena: #1a4d2e;
+    --color-river: #4682b4;
+    --color-player: #3b82f6;
+    --color-enemy: #ef4444;
+    --elixir-color: #d946ef;
+    --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.5);
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-light) 100%);
+    color: var(--color-text);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    touch-action: none;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: opacity 0.3s ease;
+}
+
+.screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Start & End Screens */
+#start-screen h1,
+#end-screen h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 40px rgba(124, 58, 237, 0.6);
+}
+
+#start-screen p {
+    font-size: 1.25rem;
+    color: var(--color-text-muted);
+    margin-bottom: 2rem;
+}
+
+.btn-primary {
+    padding: 1rem 3rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    color: var(--color-text);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: var(--shadow-glow);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 0 30px rgba(124, 58, 237, 0.8);
+}
+
+.btn-primary:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Game Screen */
+#game-screen {
+    justify-content: flex-start;
+    padding: 0;
+}
+
+#canvas-container {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, #1a4d2e 0%, #0f3a20 50%, #1a4d2e 100%);
+    position: relative;
+}
+
+#game-canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    background: transparent;
+}
+
+/* HUD */
+#hud {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: rgba(10, 14, 39, 0.95);
+    backdrop-filter: blur(10px);
+    border-top: 2px solid rgba(124, 58, 237, 0.3);
+}
+
+#enemy-info,
+#player-info {
+    width: 100%;
+}
+
+.elixir-bar {
+    width: 100%;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid rgba(124, 58, 237, 0.4);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.elixir-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--elixir-color) 0%, #c026d3 100%);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    box-shadow: 0 0 10px rgba(217, 70, 239, 0.6);
+    position: relative;
+}
+
+.elixir-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0.3) 50%,
+            transparent 100%);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+#elixir-count {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--color-text);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Card Deck */
+#card-deck {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+    margin-top: 0.75rem;
+}
+
+.card {
+    flex: 1;
+    max-width: 120px;
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(236, 72, 153, 0.2) 100%);
+    border: 2px solid rgba(124, 58, 237, 0.6);
+    border-radius: 12px;
+    padding: 0.75rem 0.5rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card:hover::before {
+    opacity: 1;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.05);
+    border-color: var(--color-primary-light);
+    box-shadow: 0 8px 24px rgba(124, 58, 237, 0.6);
+}
+
+.card:active {
+    transform: translateY(-4px) scale(1.02);
+}
+
+.card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.card.selected {
+    border-color: #fbbf24;
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.8);
+    transform: translateY(-8px) scale(1.05);
+}
+
+.card-cost {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--elixir-color) 0%, #c026d3 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.875rem;
+    box-shadow: 0 2px 8px rgba(217, 70, 239, 0.6);
+}
+
+.card-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-align: center;
+    margin-top: auto;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    #canvas-container {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    #hud {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+
+    #start-screen h1,
+    #end-screen h1 {
+        font-size: 2.5rem;
+    }
+
+    .card {
+        max-width: 100px;
+    }
+
+    .card-name {
+        font-size: 0.75rem;
+    }
+}
